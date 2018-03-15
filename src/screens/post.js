@@ -6,21 +6,16 @@ import { uploadPostThunk } from '../reducers/post';
 
 export class Post extends Component {
 
-
-    
-
     _pickImage () {
         ImagePicker.showImagePicker({
             title: 'Select Image/Video',
             mediaType: 'mixed',
             videoQuality: 'high'
         }, response => {
-            console.log('resssssssponsee', response)
             this.props.uploadPost(response)
         })
     }
     render () {
-        console.log('propppssssssss', this.props)
         return (
             <View>
                 <Button title="submit" onPress={this._pickImage.bind(this)}/>

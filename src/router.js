@@ -1,13 +1,28 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import loggingMiddleware from 'redux-logger';
-import thunkMiddleware from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { StackNavigator, TabNavigator }  from 'react-navigation';
+import SignUp from './screens/SignUp';
+import Login from './screens/Login';
+import OrgSignUp from './screens/OrgSignUp';
 
 
-const store = createStore(
-    reducers,
-    {},
-    composeWithDevTools(compose(applyMiddleware(thunkMiddleware, loggingMiddleware)))
-);
-
-export default store
+export const LoggedOut = StackNavigator({
+    SignUp: {
+        screen: SignUp,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Login: {
+        screen: Login,
+        navigationOptions: {
+            header: null
+        }
+    },
+    OrgSignUp: {
+        screen: OrgSignUp,
+        navigationOptions: {
+            header: null
+        }
+    }
+}, {
+    headerMode: 'none'
+})

@@ -18,7 +18,7 @@ const POST_UPLOAD_FAIL = 'POST_UPLOAD_FAIL';
 
 //INITIAL STATE
 
-const initialState = {}
+const initialState = {};
 
 //ACTION CREATORS
 
@@ -29,9 +29,29 @@ const initialState = {}
 //THUNK CREATORS
 
 export const uploadPostThunk = (file, mime = 'application/octet-stream') => async dispatch => {
-    console.log('filleleeeeeeee', file)
+    console.log('filleleeeeeeee', file);
+    dispatch({ type: POST_UPLOAD_START });
     return new Promise((resolve, reject) => {
-        const uploadUri = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri
+        const uploadUri = Platform.OS === 'ios' ? file.uri.replace('file://', '') : file.uri;
+        console.log('urrriiiiiiiii', uploadUri)
+        const sessionId = new Date().getTime();
+        let uploadBlob = null;
+        const storageRef = firebase.storage().ref('media').child(file.fileName);
+
+        fs.readFile(uploadUri, 'base64')
+        .then(data => Blob.build(data, { type: `${mime};BASE^$` }))
+        .then((blob) => {
+            uploadBlob = blob
+            return storageRef.put(blob, { contentType: mime })
+        })
+        .then(() => {
+            uploadBlob.close()
+            return storageRef.getDownloadURL()
+        })
+        .then(url => {
+            resolve(url)
+            console.log('urrrrlllllll', url)
+        })
     })
 };
 

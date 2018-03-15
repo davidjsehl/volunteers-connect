@@ -16,7 +16,8 @@ import {
 import { Provider } from 'react-redux';
 import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_STORAGE_BUCKET } from 'react-native-dotenv';
 import store from './src/store';
-import Post from './src/screens/post';
+import Post from './src/screens/Post';
+import { LoggedOut } from './src/router';
 
 
 // const instructions = Platform.select({
@@ -43,7 +44,7 @@ export class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Post />
+        <LoggedOut />
       </Provider>
     );
   }
