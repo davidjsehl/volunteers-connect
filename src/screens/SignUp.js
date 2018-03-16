@@ -60,8 +60,6 @@ export class SignUp extends Component {
             <KeyboardAvoidingView behavior="padding" style={styles.screenContainer}>
                 <View style={styles.signUpContainer}>
                     <View style={styles.headerContainer}>
-                        {/* <Text style={styles.titleText}>outfit</Text>
-                        <Text style={styles.subtitle}>the style network</Text> */}
                         <Image style={styles.logo} source={require('../../assets/logvc.png')} />
                     </View>
                 </View>
@@ -72,7 +70,6 @@ export class SignUp extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             placeholder="First Name"
-                            placeholderTextColor="#fff"
                             value={this.props.firstName}
                             onChangeText={(text) => this.props.authFormUpdate({ prop: 'firstName', value: text })}
                         />
@@ -80,7 +77,6 @@ export class SignUp extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             placeholder="Last Name"
-                            placeholderTextColor="#fff"
                             value={this.props.lastName}
                             onChangeText={(text) => this.props.authFormUpdate({ prop: 'lastName', value: text })}
                         />
@@ -88,7 +84,6 @@ export class SignUp extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             placeholder="Email"
-                            placeholderTextColor="#fff"
                             value={this.props.email}
                             onChangeText={(text) => this.props.authFormUpdate({ prop: 'email', value: text })}
                         />
@@ -96,7 +91,6 @@ export class SignUp extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             placeholder="Password"
-                            placeholderTextColor="#fff"
                             secureTextEntry
                             value={this.props.password}
                             onChangeText={(text) => this.props.authFormUpdate({ prop: 'password', value: text })}
@@ -106,6 +100,9 @@ export class SignUp extends Component {
                         <Text style={styles.loginText}>Already have an account?</Text>
                         <TouchableOpacity style={styles.buttonContainer} onPress={() => this.props.navigation.navigate('Login')}>
                             <Text style={styles.buttonText}>LOG IN</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.orgSignUpTextContainer} onPress={() => this.props.navigation.navigate('OrgSignUp')} >
+                            <Text style={styles.orgSignUpText}>SIGN UP as an organization</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -120,10 +117,6 @@ const styles = {
         flex: 1,
         backgroundColor: 'white',
     },
-    // loginContainer: {
-    //     alignItems: 'center',
-    //     flexGrow: 1,
-    // },
     signUpContainer: {
         alignItems: 'center',
         flexGrow: 1,
@@ -140,17 +133,6 @@ const styles = {
         alignItems: 'center',
         justifyContent: 'center'
     },
-    titleText: {
-        fontSize: 30,
-        color: '#775839',
-    },
-    title: {
-        color: "#FFF",
-        marginTop: 120,
-        width: 180,
-        textAlign: 'center',
-        opacity: 0.9
-    },
     container: {
         padding: 20
     },
@@ -158,17 +140,14 @@ const styles = {
         height: 30,
         backgroundColor: 'rgba(91, 87, 86, 0.2)',
         marginBottom: 10,
-        padding: 15,
-        color: 'white',
+        paddingLeft: 15,
+        paddingRight: 15,
         borderRadius: 5,
-    
     },
     buttonContainer: {
         backgroundColor: '#367BA5',
         paddingVertical: 10,
-        // borderWidth: 5,
         borderRadius: 5,
-        // borderColor: 'white'
     },
     buttonText: {
         color: '#fff',
@@ -187,6 +166,15 @@ const styles = {
         paddingBottom: 5,
         fontSize: 14,
         color: 'rgba(91, 87, 86, 0.7)'
+    },
+    orgSignUpTextContainer: {
+        paddingTop: 15,
+    },
+    orgSignUpText: {
+        fontSize: 14,
+        color: '#8A705F',
+        fontWeight: 'bold',
+        textAlign: 'center',
     }
 }
 

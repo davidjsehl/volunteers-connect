@@ -17,7 +17,8 @@ import { Provider } from 'react-redux';
 import { FIREBASE_API_KEY, FIREBASE_AUTH_DOMAIN, FIREBASE_STORAGE_BUCKET } from 'react-native-dotenv';
 import store from './src/store';
 import Post from './src/screens/Post';
-import { LoggedOut } from './src/router';
+import { isLoggedIn } from './src/auth';
+import { LoggedOut, createRootNavigator } from './src/router';
 
 
 // const instructions = Platform.select({
@@ -29,6 +30,14 @@ import { LoggedOut } from './src/router';
 
 export class App extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      loggedIn: false,
+      checkedLogin: false
+    }
+  }
+
   componentDidMount() {
     var config = {
       apiKey: FIREBASE_API_KEY,
@@ -39,12 +48,23 @@ export class App extends Component {
       messagingSenderId: "947620558752"
     };
     firebase.initializeApp(config);
+    isLoggedIn()
+      .then(res => this.setState({ loggedIn: res, checkedLogin: true }))
+      .catch(err => console.error(err))
   }
 
   render() {
+
+    const { loggedIn, checkedLogin } = this.state
+    if (!checkedLogin) {
+      return null
+    }
+
+    const Layout = createRootNavigator(loggedIn)
+
     return (
       <Provider store={store}>
-        <LoggedOut />
+        <Layout />
       </Provider>
     );
   }

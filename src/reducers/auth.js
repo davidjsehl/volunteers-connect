@@ -24,7 +24,7 @@ const initialState = {
     password: '',
     loading: false,
     error: '',
-    currentUser: null
+    user: {}
 }
 
 //ACTION CREATORS
@@ -62,7 +62,7 @@ export const me = () => dispatch => {
     dispatch(getUser(firebase.auth().currentUser || {}));
 }
 
-export const createUser = (user) => dispatch => {
+export const createUser = (user, navigation, dispatch) => dispatch => {
     let newUser = {
         id: user.uid,
         displayName: user.displayName,
@@ -70,41 +70,50 @@ export const createUser = (user) => dispatch => {
         email: user.email
     }
     firebase.database().ref('/users').child(user.uid)
-        .set(newUser, () => {
-            dispatch(getUser(newUser))
-        });
+    .set(newUser, () => {
+        console.log('newwwwwUserrrrr', newUser)
+        dispatch(getUserAndRedirect(newUser, navigation, dispatch))
+    });
 }
 
-export const signUpUserThunk = ({ firstName, lastName, email, password }) => async dispatch => {
-    dispatch({ type: LOGIN_USER_START })
+export const signUpUserThunk = ({ firstName, lastName, email, password }, navigation) => async dispatch => {
+    dispatch({ type: SIGN_UP_USER_START })
     let user, userToken
-    const query = firebase.database().ref('/users')
-        .orderByChild('id')
-        .equalTo(user.uid)
     try {
-        user = await firebase.auth().signInWithEmailAndPassword(email, password);
-        query.on('value', async snapshot => {
-            if (snapshot.val()) {
-                const existingUser = snapshot.val()[user.uid]
-                userToken = existingUser.uid;
-                await AsyncStorage.setItem('user-token', userToken);
-                dispatch(loginUserSuccess(existingUser))
-                getUserAndRedirect(existingUser, navigation, dispatch)
-
-            } else {
-                dispatch(createUser(user))
-            }
-        })
+        user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        console.log('ussssserrrrrrrrrr', user)
+        userToken = user.uid;
+        console.log('tokkkennnnnn', userToken)
+        await AsyncStorage.setItem('user-token', userToken);
+        dispatch(signUpUserSuccess(user))
+        dispatch(createUser(user, navigation, dispatch))
     } catch (err) {
-        dispatch(loginUserFail(user))
+        dispatch(signUpUserFail(user))
         console.error(err)
-        alert('Upload failed, sorry :(');
+        alert('Sign up failed, sorry :(');
     }   
 }
 
-// export const loginUserThunk = () => dispatch => {
+export const loginUserThunk = ({ email, password }, navigation) => async dispatch => {
+    dispatch({ type: LOGIN_USER_START })
+    let user, userToken;
+    try {
+        user = await firebase.auth().signInWithEmailAndPassword(email, password);
+        userToken = user.uid;
+        await AsyncStorage.setItem('user-token', userToken);
+        dispatch(loginUserSuccess(user));
+        dispatch(getUserAndRedirect(user, navigation, dispatch));
+    } catch (err) {
+        dispatch(loginUserFail(user));
+        console.error(err);
+        alert('Login failed')
+    }
+}
 
-// }
+export const logoutUserThunk = (navigation) => async dispatch => {
+    await AsyncStorage.removeItem('user-token')
+    navigation.navigate('LoggedOut')
+}
 
 //REDUCER
 
@@ -118,7 +127,7 @@ export default (state = initialState, action) => {
         case SIGN_UP_USER_START:
             return { ...state, loading: true, error: '' }
         case SIGN_UP_USER_SUCCESS:
-            return { ...state, loading: false, currentUser: action.user, error: '' }
+            return { ...state, loading: false, user: action.user, error: '' }
         case SIGN_UP_USER_FAIL:
             return {
                 ...state,
@@ -129,7 +138,7 @@ export default (state = initialState, action) => {
         case LOGIN_USER_START:
             return { ...state, loading: true }
         case LOGIN_USER_SUCCESS:
-            return { ...state, loading: false, currentUser: action.user, error: '' }
+            return { ...state, loading: false, user: action.user, error: '' }
         case GET_USER:
             return action.user
         case LOG_OUT_SUCCESS:
@@ -139,4 +148,10 @@ export default (state = initialState, action) => {
         default:
             return state
     }
+}
+
+const getUserAndRedirect = (user, navigation, dispatch) => {
+    console.log('rediiirrectttttttt')
+    dispatch(getUser(user))
+    navigation.navigate('LoggedIn')
 }
