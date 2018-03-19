@@ -3,6 +3,10 @@ import SignUp from './screens/SignUp';
 import Login from './screens/Login';
 import OrgSignUp from './screens/OrgSignUp';
 import Home from './screens/Home';
+import EventMap from './screens/EventMap';
+import EventDetail from './screens/EventDetail';
+import AllEvents from './screens/AllEvents';
+import AllOrganizations from './screens/AllOrganizations';
 
 
 export const LoggedOut = StackNavigator({
@@ -28,6 +32,35 @@ export const LoggedOut = StackNavigator({
     headerMode: 'none'
 })
 
+export const HomeFlow = StackNavigator({
+    Home: {
+        screen: Home,
+        navigationOptions: {
+            title: 'Home',
+            headerStyle: {
+                backgroundColor: '#367BA5'
+            },
+            headerTintColor: '#fff'
+        }
+    },
+    AllEvents: {
+        screen: AllEvents,
+        navigationOptions: {
+            title: 'Events',
+            headerStyle: {
+                backgroundColor: '#367BA5'
+            },
+            headerTintColor: '#fff'
+        }
+    },
+    AllOrganizations: {
+        screen: AllOrganizations,
+        navigationOptions: {
+            header: null
+        }
+    }
+})
+
 export const LoggedIn = StackNavigator({
     Home: {
         screen: Home,
@@ -35,13 +68,15 @@ export const LoggedIn = StackNavigator({
             header: null
         }
     }
+}, {
+    headerMode: 'none'
 })
 
 export const createRootNavigator = (loggedIn = false) => {
     return StackNavigator(
         {
-            LoggedIn: {
-                screen: LoggedIn,
+            HomeFlow: {
+                screen: HomeFlow,
                 navigationOptions: {
                     gesturesEnabled: false,
                     headerLeft: null,
@@ -59,6 +94,6 @@ export const createRootNavigator = (loggedIn = false) => {
         },
         {
             mode: 'modal',
-            initialRouteName: loggedIn ? 'LoggedIn' : 'LoggedOut'
+            initialRouteName: loggedIn ? 'HomeFlow' : 'LoggedOut'
         })
 }

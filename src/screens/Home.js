@@ -1,26 +1,40 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { logoutUserThunk } from '../reducers/auth';
+import { getAllEventsThunk } from '../reducers/events'
+import { getAllOrganizationsThunk } from '../reducers/organizations';
 
 
 export class Home extends Component {
+
+    componentDidMount () {
+        this.props.getEvents()
+        this.props.getOrganizations()
+    }
 
     handlePress() {
         this.props.logoutUser(this.props.navigation)
     }
 
     render () {
+        console.log('proppppppsssss', this.props)
         return (
             <View>
-                <Text>HOME SCREEEENNNNN</Text>
-                <Text>HOME SCREEEENNNNN</Text>
-                <Text>HOME SCREEEENNNNN</Text>
-                <Text>HOME SCREEEENNNNN</Text>
-                <Text>HOME SCREEEENNNNN</Text>
+                {/* <TouchableOpacity>
+
+                </TouchableOpacity> */}
                 <Button title="submit" onPress={this.handlePress.bind(this)} />
+                <Button title="Events" onPress={() => this.props.navigation.navigate('AllEvents')} />
             </View>
         )
+    }
+}
+
+const mapStateToProps = ({ events, organizations }) => {
+    return {
+        events,
+        organizations
     }
 }
 
@@ -28,8 +42,14 @@ const mapDispatchToProps = (dispatch) => {
     return {
         logoutUser: (navigation) => {
             dispatch(logoutUserThunk(navigation))
+        },
+        getEvents: () => {
+            dispatch(getAllEventsThunk())
+        },
+        getOrganizations: () => {
+            dispatch(getAllOrganizationsThunk())
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
