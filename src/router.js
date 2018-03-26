@@ -53,6 +53,16 @@ export const HomeFlow = StackNavigator({
             headerTintColor: '#fff'
         }
     },
+    EventDetail: {
+        screen: EventDetail,
+        navigationOptions: {
+            title: 'Event Detail',
+            headerStyle: {
+                backgroundColor: '#367BA5'
+            },
+            headerTintColor: '#fff'
+        }
+    },
     AllOrganizations: {
         screen: AllOrganizations,
         navigationOptions: {
