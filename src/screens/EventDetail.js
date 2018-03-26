@@ -12,9 +12,25 @@ export class EventDetail extends Component {
         this.props.logoutUser(this.props.navigation)
     }
 
+    renderVolunteers(volunteers) {
+        return (
+            <View>
+                {
+                    volunteers.map(volunteer => {
+                        return (
+                            <Text key={volunteer.id}>{volunteer.displayName}</Text>
+                        )
+                    })
+                }
+            </View>
+        )
+    }
+
     render() {
-        console.log('detaillll props', this.props.navigation.state.params.event)
+        console.log('evennnnttttttt', this.props.navigation.state.params.event)
+        console.log('propppssssss', this.props)
         const { address, coordinator, date, location, time, title, description, imageUrl } = this.props.navigation.state.params.event
+        volunteers = Object.keys(this.props.navigation.state.params.event.volunteers).map(id => this.props.navigation.state.params.event.volunteers[id])
         return (
             <View>
                 <View style={styles.cardContainer}>
@@ -31,7 +47,18 @@ export class EventDetail extends Component {
                             <Text>{description}</Text>
                         </View>
                     </View>
+                    <View style={styles.cardSection}>
+                        <View>
+                            <Text>Volunteers</Text>
+                        </View>
+                        <View>
+                            {this.renderVolunteers(volunteers)}
+                        </View>
+                    </View>
                 </View>
+                <Button title="Volunteer">
+                    Volunteer For This Event!
+                </Button>
                 <Button title="submit" onPress={this.handlePress.bind(this)} />
             </View>
         )
@@ -58,6 +85,12 @@ const styles = {
     }
 }
 
+const mapStateToProps = ({ auth }) => {
+    return {
+        user: auth.user
+    }
+}
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -67,4 +100,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(EventDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetail)

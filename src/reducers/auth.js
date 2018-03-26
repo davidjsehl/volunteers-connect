@@ -53,7 +53,9 @@ const userCreated = (user) => {
     return { type: CREATE_USER_SUCCESS, user }
 }
 
-const getUser = user => ({ type: GET_USER, user })
+const getUser = (user) => {
+    return { type: GET_USER, user }
+}
 
 //THUNK CREATORS
 
@@ -153,5 +155,5 @@ export default (state = initialState, action) => {
 const getUserAndRedirect = (user, navigation, dispatch) => {
     console.log('rediiirrectttttttt')
     dispatch(getUser(user))
-    navigation.navigate('LoggedIn')
+    navigation.navigate('HomeFlow')
 }
