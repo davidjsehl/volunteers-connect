@@ -16,6 +16,9 @@ export class AllEvents extends Component {
     constructor(props) {
         super(props)
         this.state = {}
+
+        this.renderRow = this.renderRow.bind(this)
+
     };
 
     componentDidMount() {
@@ -27,13 +30,12 @@ export class AllEvents extends Component {
     };
 
     renderRow(event) {
-        return <EventListItem event={event} />
+        return <EventListItem event={event} navigation={this.props.navigation} />
     }
 
     render() {
-
         const filteredEvents = this.state.searchTerm ? this.props.events.filter(event => {
-            return event.title.indexOf(this.state.searchTerm) !== -1
+            return event.title.toLowerCase().indexOf(this.state.searchTerm.toLowerCase()) !== -1
         }) : this.props.events;
 
         const dataSource = ds.cloneWithRows(filteredEvents);
@@ -49,6 +51,7 @@ export class AllEvents extends Component {
                 <ListView 
                     dataSource={dataSource}
                     renderRow={this.renderRow}
+                    enableEmptySections
                 />
             </View>
         )

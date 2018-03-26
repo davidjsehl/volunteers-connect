@@ -8,17 +8,15 @@ import { getAllOrganizationsThunk } from '../reducers/organizations';
 
 export class Home extends Component {
 
-    componentDidMount () {
-        this.props.getEvents()
-        this.props.getOrganizations()
-    }
+    // componentDidMount () {
+    //     this.props.getEvents()
+    // }
 
     handlePress() {
         this.props.logoutUser(this.props.navigation)
     }
 
     render () {
-        console.log('proppppppsssss', this.props)
         return (
             <View>
                 {/* <TouchableOpacity>
