@@ -48,6 +48,7 @@ export class App extends Component {
       messagingSenderId: "947620558752"
     };
     firebase.initializeApp(config);
+    
     isLoggedIn()
       .then(res => this.setState({ loggedIn: res, checkedLogin: true }))
       .catch(err => console.error(err))

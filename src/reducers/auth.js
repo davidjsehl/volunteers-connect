@@ -24,7 +24,7 @@ const initialState = {
     password: '',
     loading: false,
     error: '',
-    user: {}
+    user: null
 }
 
 //ACTION CREATORS
@@ -59,10 +59,10 @@ const getUser = (user) => {
 
 //THUNK CREATORS
 
-export const me = () => dispatch => {
-    console.log('CURRENT USER', firebase.auth().currentUser);
-    dispatch(getUser(firebase.auth().currentUser || {}));
-}
+// export const me = () => dispatch => {
+//     console.log('CURRENT USER', firebase.auth().currentUser);
+//     dispatch(getUser(firebase.auth().currentUser || {}));
+// }
 
 export const createUser = (user, navigation, dispatch) => dispatch => {
     let newUser = {
@@ -80,9 +80,10 @@ export const createUser = (user, navigation, dispatch) => dispatch => {
 
 export const signUpUserThunk = ({ firstName, lastName, email, password }, navigation) => async dispatch => {
     dispatch({ type: SIGN_UP_USER_START })
-    let user, userToken
+    let user, userToken, updatedUser
     try {
         user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        await user.updateProfile({ displayName: `${firstName} ${lastName}` })
         console.log('ussssserrrrrrrrrr', user)
         userToken = user.uid;
         console.log('tokkkennnnnn', userToken)
@@ -153,7 +154,6 @@ export default (state = initialState, action) => {
 }
 
 const getUserAndRedirect = (user, navigation, dispatch) => {
-    console.log('rediiirrectttttttt')
     dispatch(getUser(user))
     navigation.navigate('HomeFlow')
 }
