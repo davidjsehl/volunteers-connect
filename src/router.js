@@ -63,24 +63,24 @@ export const HomeFlow = StackNavigator({
             headerTintColor: '#fff'
         }
     },
-    AllOrganizations: {
-        screen: AllOrganizations,
-        navigationOptions: {
-            header: null
-        }
-    }
+    // AllOrganizations: {
+    //     screen: AllOrganizations,
+    //     navigationOptions: {
+    //         header: null
+    //     }
+    // }
 })
 
-export const LoggedIn = StackNavigator({
-    Home: {
-        screen: Home,
-        navigationOptions: {
-            header: null
-        }
-    }
-}, {
-    headerMode: 'none'
-})
+// export const LoggedIn = StackNavigator({
+//     Home: {
+//         screen: Home,
+//         navigationOptions: {
+//             header: null
+//         }
+//     }
+// }, {
+//     headerMode: 'none'
+// })
 
 export const createRootNavigator = (loggedIn = false) => {
     return StackNavigator(

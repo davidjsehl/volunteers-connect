@@ -29,25 +29,25 @@ export class Home extends Component {
     }
 }
 
-const mapStateToProps = ({ events, organizations }) => {
-    return {
-        events,
-        organizations
-    }
-}
+// const mapStateToProps = ({ events, organizations }) => {
+//     return {
+//         events,
+//         organizations
+//     }
+// }
 
 const mapDispatchToProps = (dispatch) => {
     return {
         logoutUser: (navigation) => {
             dispatch(logoutUserThunk(navigation))
         },
-        getEvents: () => {
-            dispatch(getAllEventsThunk())
-        },
-        getOrganizations: () => {
-            dispatch(getAllOrganizationsThunk())
-        }
+        // getEvents: () => {
+        //     dispatch(getAllEventsThunk())
+        // },
+        // getOrganizations: () => {
+        //     dispatch(getAllOrganizationsThunk())
+        // }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(null, mapDispatchToProps)(Home)
